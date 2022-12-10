@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://csv-reader-front.herokuapp.com"
 ]
 CORS_ALLOW_HEADERS = [
     'body',
