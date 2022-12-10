@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost',
                  'http://localhost:3000',
                  'https://resttesttest.com',
-                 "https://csv-reader-front.herokuapp.com"']
+                 "https://csv-reader-front.herokuapp.com"]
 
 
 # Application definition
