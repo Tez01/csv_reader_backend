@@ -153,8 +153,7 @@ def index(request):
                 for entry in listOfDataEntries:
                     # Save in database
                     saveInDatabase(entry)
-                    
-                   print("Everything worked")
+                    print("Everything worked")
                 return JsonResponse({'message': 'Success'}, status=HTTPStatus.OK)
 
             return JsonResponse({'message': validationResult}, status=HTTPStatus.BAD_REQUEST)
