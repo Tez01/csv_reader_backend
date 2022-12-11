@@ -45,7 +45,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+
+
+)
+CORS_ALLOW_HEADERS = [
+    'body',
+    'content-type',
+    'method'
+]
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -136,3 +146,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Activate django-heroku
 django_heroku.settings(locals())
+
