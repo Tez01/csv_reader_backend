@@ -131,20 +131,20 @@ def cleanData(data):
 
 @csrf_exempt
 def index(request):
-    print(os.getenv('DATABASE_NAME'))
-    print(os.getenv('DATABASE_HOST'))
-    print(os.getenv('DATABASE_PORT'))
-    print(os.getenv('DATABASE_PASSWORD'))
-    print(os.getenv('DATABASE_USER'))
-    print(os.getenv('SECRET_KEY'))
+
     if request.method == "POST":
 
         try:
             receivedDataString = request.body  # Because its a byte string
             listOfDataEntries = json.loads(receivedDataString)
+            response = JsonResponse()
+            response["Access-Control-Allow-Origin"] = "*"
 
             if listOfDataEntries == []:
-                return JsonResponse({'message': 'Empty data'}, status=HTTPStatus.BAD_REQUEST)
+                response.data = {'message': 'Empty data'}
+                response.status = HTTPStatus.BAD_REQUEST
+                return response
+
             # Clean the data
             cleanedData = cleanData(listOfDataEntries)
             # Validate data
@@ -158,11 +158,16 @@ def index(request):
                 for entry in listOfDataEntries:
                     # Save in database
                     saveInDatabase(entry)
-                return JsonResponse({'message': 'Success'}, status=HTTPStatus.OK)
+                response.data = {'message': 'Success'}
+                response.status = HTTPStatus.OK
+                return response
 
-            return JsonResponse({'message': validationResult}, status=HTTPStatus.BAD_REQUEST)
+            response.data = {'message': validationResult}
+            response.status = HTTPStatus.BAD_REQUEST
+            return response
 
         except Exception as e:
             logging.error(traceback.format_exc())
             return JsonResponse({'message': 'failed'}, status=HTTPStatus.BAD_REQUEST)
     return JsonResponse({'message': 'failed'}, status=HTTPStatus.BAD_REQUEST)
+
