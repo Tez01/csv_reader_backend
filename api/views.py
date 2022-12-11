@@ -23,7 +23,7 @@ REQUIRED_FIELDS = [
 def checkRequiredFieldsPresent(dataEntries):
     """Checks if required fields are present in the data or not
     Arguments: Accept a list of data entries where each entry is a dict, Atlease one entry should be present
-    Returns: 
+    Returns:
         Boolean: True, if all fields are present. False, Otherwise
         """
 
@@ -42,7 +42,7 @@ def checkDataValues(dataEntries):
     """Checks if field values are in range and as per database model
     Arguments: Accept a list of data entries where each entry is a dict, Atleast one entry should be present
                 Assumes data has been validated through required fields checks
-    Returns: 
+    Returns:
         Boolean: True, if all entries are valid, False otherwise
         """
 
@@ -170,6 +170,13 @@ def index(request):
 
         except Exception as e:
             logging.error(traceback.format_exc())
-            return JsonResponse({'message': 'failed'}, status=HTTPStatus.BAD_REQUEST)
-    return JsonResponse({'message': 'failed'}, status=HTTPStatus.BAD_REQUEST)
+            response = JsonResponse({'message': 'Error. See logs'})
+            response["Access-Control-Allow-Origin"] = "*"
+            response.status = HTTPStatus.BAD_REQUEST
+            return response
+
+    response = JsonResponse({'message': 'Not a post request'})
+    response["Access-Control-Allow-Origin"] = "*"
+    response.status = HTTPStatus.BAD_REQUEST
+    return response
 
