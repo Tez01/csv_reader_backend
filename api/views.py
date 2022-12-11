@@ -23,7 +23,7 @@ REQUIRED_FIELDS = [
 def checkRequiredFieldsPresent(dataEntries):
     """Checks if required fields are present in the data or not
     Arguments: Accept a list of data entries where each entry is a dict, Atlease one entry should be present
-    Returns:
+    Returns: 
         Boolean: True, if all fields are present. False, Otherwise
         """
 
@@ -42,7 +42,7 @@ def checkDataValues(dataEntries):
     """Checks if field values are in range and as per database model
     Arguments: Accept a list of data entries where each entry is a dict, Atleast one entry should be present
                 Assumes data has been validated through required fields checks
-    Returns:
+    Returns: 
         Boolean: True, if all entries are valid, False otherwise
         """
 
@@ -139,12 +139,7 @@ def index(request):
             listOfDataEntries = json.loads(receivedDataString)
 
             if listOfDataEntries == []:
-                response = JsonResponse({'message': 'Empty data'})
-                response["Access-Control-Allow-Origin"] = "*"
-
-                response.status = HTTPStatus.BAD_REQUEST
-                return response
-
+                return JsonResponse({'message': 'Empty data'}, status=HTTPStatus.BAD_REQUEST)
             # Clean the data
             cleanedData = cleanData(listOfDataEntries)
             # Validate data
@@ -158,25 +153,12 @@ def index(request):
                 for entry in listOfDataEntries:
                     # Save in database
                     saveInDatabase(entry)
-                response = JsonResponse({'message': 'Success'})
-                response["Access-Control-Allow-Origin"] = "*"
-                response.status = HTTPStatus.OK
-                return response
+                return JsonResponse({'message': 'Success'}, status=HTTPStatus.OK)
 
-            response = JsonResponse({'message': validationResult})
-            response["Access-Control-Allow-Origin"] = "*"
-            response.status = HTTPStatus.BAD_REQUEST
-            return response
+            return JsonResponse({'message': validationResult}, status=HTTPStatus.BAD_REQUEST)
 
         except Exception as e:
             logging.error(traceback.format_exc())
-            response = JsonResponse({'message': 'Error. See logs'})
-            response["Access-Control-Allow-Origin"] = "*"
-            response.status = HTTPStatus.BAD_REQUEST
-            return response
-
-    response = JsonResponse({'message': 'Not a post request'})
-    response["Access-Control-Allow-Origin"] = "*"
-    response.status = HTTPStatus.BAD_REQUEST
-    return response
+            return JsonResponse({'message': 'failed'}, status=HTTPStatus.BAD_REQUEST)
+    return JsonResponse({'message': 'failed'}, status=HTTPStatus.BAD_REQUEST)
 
