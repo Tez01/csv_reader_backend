@@ -137,11 +137,11 @@ def index(request):
         try:
             receivedDataString = request.body  # Because its a byte string
             listOfDataEntries = json.loads(receivedDataString)
-            response = JsonResponse()
-            response["Access-Control-Allow-Origin"] = "*"
 
             if listOfDataEntries == []:
-                response.data = {'message': 'Empty data'}
+                response = JsonResponse({'message': 'Empty data'})
+                response["Access-Control-Allow-Origin"] = "*"
+
                 response.status = HTTPStatus.BAD_REQUEST
                 return response
 
@@ -158,11 +158,13 @@ def index(request):
                 for entry in listOfDataEntries:
                     # Save in database
                     saveInDatabase(entry)
-                response.data = {'message': 'Success'}
+                response = JsonResponse({'message': 'Success'})
+                response["Access-Control-Allow-Origin"] = "*"
                 response.status = HTTPStatus.OK
                 return response
 
-            response.data = {'message': validationResult}
+            response = JsonResponse({'message': validationResult})
+            response["Access-Control-Allow-Origin"] = "*"
             response.status = HTTPStatus.BAD_REQUEST
             return response
 
